@@ -1,5 +1,6 @@
 body {
-    background: rgb(142, 164, 173);
+    /*background: rgb(142, 164, 173);*/
+    background: rgb(160, 129, 106);
     margin: 0%;
     padding: 0%;
 }
@@ -14,7 +15,8 @@ h1 {
 
 /* Styling for the navigation bar on top of the page */
 .topnav {
-    background-color: rgb(110, 186, 216);
+    /*background-color: rgb(110, 186, 216);*/
+    background: rgb(92, 63, 41);
     opacity:0.9;
     overflow: hidden;
     align-content: center;
@@ -44,7 +46,8 @@ h1 {
   /* Add a color to the active/current link */
   .topnav a.active {
     /*#4CAF50*/
-    background-color: rgb(86, 165, 240);
+    /*background-color: rgb(86, 165, 240);*/
+    background: rgb(155, 111, 78);
     color: white;
   }
 
@@ -60,10 +63,43 @@ h1 {
     font-size: 20px;
 	text-justify: auto;
   }
+
+  /*Styling for About me page*/
   .AboutMe p{
     text-align: left;
     font-family: 'Courier New', Courier, monospace;
     margin: 47px;
     font-size: 20px;
-	text-justify: auto;
+	  text-justify: auto;
   }
+
+  /* Styling for the links section */
+  .PostLinks{
+    margin: 0 auto;
+    width: 60%;
+    align-content: center;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  .PostLinks div.Date{
+    font-weight: bold;
+  }
+  .PostLinks div.Name{
+    font-style: italic;
+  }
+
+  /* Styling for the footer on the main page */
+  .MainFooter{
+    align-content: center;
+    text-align: center;
+    margin: 16px;
+    font-size: 10px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+.CommingSoon {
+  text-align: left;
+  font-family: 'Courier New', Courier, monospace;
+  margin: 47px;
+  font-size: 20px;
+  text-justify: auto;
+}

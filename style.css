@@ -103,3 +103,15 @@ h1 {
   font-size: 20px;
   text-justify: auto;
 }
+
+.PostText {
+  margin: 0 auto;
+  width: 60%;
+  align-content: left;
+  }
+.PostText p{
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+	text-justify: auto;
+  }

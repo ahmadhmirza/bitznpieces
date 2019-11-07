@@ -80,11 +80,14 @@ h1 {
     align-content: center;
     font-family: 'Courier New', Courier, monospace;
   }
-  .PostLinks div.Date{
+  .PostLinks span.Date{
     font-weight: bold;
   }
-  .PostLinks div.Name{
+  .PostLinks span.Name{
     font-style: italic;
+  }
+  .PostLinks span.a{
+    color: black;
   }
 
   /* Styling for the footer on the main page */

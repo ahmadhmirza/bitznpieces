@@ -81,12 +81,12 @@ h1 {
     font-family: 'Courier New', Courier, monospace;
   }
   .PostLinks span.Date{
-    font-weight: bold;
+    font-weight: italic;
   }
   .PostLinks span.Name{
-    font-style: italic;
+    font-style: bold;
   }
-  .PostLinks span.a{
+  .PostLinks span.Name.a{
     color: black;
   }
 

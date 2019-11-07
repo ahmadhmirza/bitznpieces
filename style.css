@@ -80,9 +80,8 @@ h1 {
     align-content: center;
     font-family: 'Courier New', Courier, monospace;
   }
-  .PostLinks .Date{
-    font-style: italic;
-  }
+  /*.PostLinks .Date{
+  }*/
 
   .PostLinks .Name a{
     color: black;

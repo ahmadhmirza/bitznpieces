@@ -32,27 +32,23 @@
 
         <section class="PostText">
             <h2> Installing python packages using pip</h2>
-            <p> Starting off my tech notes, I decided to start from the very begining. The most basic requirement that a beginner programmer
-                will run into is installing packages that might be needed while writing the code. For example one of the requirements for your program 
+            <p> Starting off my tech notes, I decided to start from the very basics. When I say basics,what pops into my head is that one of the first requirements
+                that a beginner programmer will run into, is installing packages that might be needed while writing the code. For example one of the requirements for your program 
                 could be to read an excel file. One way to fulfil this requirement could be to write your own code from scratch to parse an excel file.
                 But why reinvent the wheel when you can use ones that are freely available? For this task many libraries already exist on the great wide 
-                internet, a simple google search will show the libraries named XLRD or Pandas could do this task by a simple function call.
-            </p>
+                internet, a simple google search will show the libraries named XLRD or Pandas could do this task by a simple function call.</p>
+            
             <p> This is where pip comes in. To gain access to these libraries you will need to install these packages in your local environment.
                 The following command does just this:
-
                 <pre><code><p class=codeHighlighting>pip install "package-name"</p></code></pre>
-
                 If you want to be more specific with your installations:
-
                 <pre><code><p class=codeHighlighting>pip install "package-name"=="version"</p></code></pre>
-
             </p>
+
             <h3> Installing packages in a batch using Requirements.txt</h3>
 	        <p> Now there will come a time when your programm will be so extensive that, you need to install multiple packages. And writing this command again
                 and again can get monotonous and every body knows programmers loat monotony! For this simple reason, there is a provision to install packages
                 using pip and a configuration file containing the names of all the required packages(and their versions if needed) like so:
-
                 <pre><code><p class=codeHighlighting>pip install -r requirements.txt</p></code></pre>
             </p>
 

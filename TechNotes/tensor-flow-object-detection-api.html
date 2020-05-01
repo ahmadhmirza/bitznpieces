@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151725252-1"></script>
+        <!-- Script for tracking using google analytics -->
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+        
+            gtag('config', 'UA-151725252-1');
+        </script>
+        <title>Bitz'nPieces</title>
+        <!-- <link rel="stylesheet" type="text/css" href="PATHTOCSSHERE">.-->
+        <link rel="stylesheet" type="text/css" href="../styles/Post_Style.css">
+        <link rel="stylesheet" type="text/css" href="../styles/google-code-prettify/prettify.css">
+        <link rel="alternate" type="application/rss+xml" title="Subscribe to new bitz" href="http://your-site.com/your-feed.rss" />
+
+    </head>
+    <body>
+        <section>
+                <h1> Bitz'nPieces</h1>
+        </section>
+
+        <div class="topnav">
+                <a href=../index.html href="#home">Home</a>
+                <a href=../CommingSoon.html>Archive</a>
+                <a href=../CommingSoon.html>Tech Notes</a>
+                <a href=../aboutme.html>About</a>
+        </div>
+
+        <section class="PostText">
+            <h2> Introduction to Object-Detection using Tensorflow</h2>
+            <p> Machinelearning and AI is all the hype these days and a big percentage of students find themselves working towards solving a problems using
+                one of the several tools available for dealing with ML problems.
+                As far as I can see, object detection is the most common AI problems that one tries to solve when starting off on this path.
+                In my opinion google has done a terrific job with TensorFlow, and the Object-Detection API not much is needed to be done to develop a custom
+                object detector.
+                With this Object-Detection API in place, the only problem left to solve is preparing the data-set for your problem. This in it self could be a huge
+                pain sometimes.
+            </p>
+            
+            <p>In this post I thought I would cover on how to get set up with TensorFlow and the TensorFlow Object Detection API, as I also had to go through this process
+                which could at times be a little frustrating in itself. I mostly work on linux, so this post is for linux, but i will make an other one for Windows soon.
+                Also this would be the first time I am going to be writing a tutorial of any kind so I am pretty sure at the end of it all there will be a huge room for 
+                improvement. So lets dive right in.
+            </p>
+            <h3>TensorFlow</h3>
+            <p> What is TensorFlow? It is an opensource library that is commonly used for machine learning applications and to qoute their web-page 
+                "TensorFlow makes it easy for beginners and experts to create machine learning models for desktop, mobile, web, and cloud". So pretty niffty and 
+                versatile huh?
+                At the moment there are two variants of TF available depending on the hardware you plan you use, they are TensorFlow CPU and TensorFlow GPU.
+                For the sake of this tutorial I will cover the CPU variant. The processing will be slower here as the GPU is not utilizes for training but 
+                theres less steps involved in setting it up.
+            </p>
+            <p> The first step towards setting up the environment for object detecion, I covered creating python virtual environments in an earlier tutorial,
+                so If you have doubts go ahead and hit that tutorial up, otherwise now is the time to create a working directory for the Object-Detection project
+                and creating a dedicated virtual-environment for the project.
+            </p>
+
+            <div class=endOfSection><p> * ------ * ------ * ------ *</p></div>
+        </section>
+        <br>
+        <footer class="MainFooter"> 
+            <p>Disclaimer: This blog entry was written in #socialdistancing mode day-unknown.</p>
+        </footer>
+
+    <script src="../styles/google-code-prettify/prettify.js"></script>
+    <script>
+        window.onload = (function(){ prettyPrint(); });
+    </script>
+    </body>
+
+</html>

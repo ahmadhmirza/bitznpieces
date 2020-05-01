@@ -14,6 +14,7 @@
         <title>Bitz'nPieces</title>
         <!-- <link rel="stylesheet" type="text/css" href="PATHTOCSSHERE">.-->
         <link rel="stylesheet" type="text/css" href="../styles/Post_Style.css">
+        <link rel="stylesheet" type="text/css" href="../styles/google-code-prettify/prettify.css">
         <link rel="alternate" type="application/rss+xml" title="Subscribe to new bitz" href="http://your-site.com/your-feed.rss" />
 
     </head>
@@ -40,11 +41,19 @@
             <p> This is where pip comes in. To gain access to these libraries you will need to install these packages in your local environment.
                 The following command does just this:
 
-                <p><code>pip install "package-name"</code></p>
+                <pre>
+                    <code>
+                        pip install "package-name"
+                    </code>
+                </pre>
 
                 If you want to be more specific with your installations:
 
-                <p><code>pip install "package-name"=="version"</code></p>
+                <pre>
+                    <code>
+                        pip install "package-name"=="version"
+                    </code>
+                </pre>
 
             </p>
             <h3> Installing packages in a batch using Requirements.txt</h3>
@@ -52,7 +61,11 @@
                 and again can get monotonous and every body knows programmers loat monotony! For this simple reason, there is a provision to install packages
                 using pip and a configuration file containing the names of all the required packages(and their versions if needed) like so:
 
-                <p><code>pip install -r requirements.txt</code></p>
+                <pre>
+                    <code>
+                        pip install -r requirements.txt
+                    </code>
+                </pre>
             </p>
 
             <h3> Writing Requirements.txt</h3>
@@ -60,24 +73,33 @@
                 moving on!... Requirements.txt file is fairly easy to write and will help you and if there are any other collaborators to you project a later point in times 
                 a lot in setting up the environment:</p>
 
-                <p> <code>
-                    <p><code>###### Required packages go here ######</code></p>
-                    <p><code>pandas</code></p>
-                    <p><code>xlrd</code></p>
-                    <p><code>some-other-package-name</code></p>
-                    <p></p>
-                    <p><code>###### Packages with specific versions ######</code></p>
-                    <p><code>tensorflow == 2.3-rc3       # package with version 2.3-rc3 will be installed</code></p>
-                    <p><code>matplotlib >= 2.2.5         # flask package with minimum allowed version 1.0</code></p>
-                    <p><code>xlwt != 1.0                 # Version Exclusion. Anything except version 1.0</code></p>
-                </code></p>
+                <figure>
+                    <figcaption>Sample requirements.txt file</figcaption>
+                    <pre>
+                        <code>
+                        ###### Required packages go here ######
+                        pandas
+                        xlrd
+                        some-other-package-name
+                        ###### Packages with specific versions ######
+                        tensorflow == 2.3-rc3       # package with version 2.3-rc3 will be installed
+                        matplotlib >= 2.2.5         # flask package with minimum allowed version 1.0
+                        xlwt != 1.0                 # Version Exclusion. Anything except version 1.0
+                        </code>
+                    </pre>
+                </figure>
+            </p>
             
             <h3> Exporintg current environment to a configuration file.</h3>
 	        <p> I believe this is one of the most useful tools under a python programmer's belt. using the following command you can generate 
                 the configuration file containing all the dependencies for your project that can then be used by other members of your team to
                 get setup with the environment and start contributing:
 
-                <p><code>pip freeze > requirements.txt</code></p>
+                <pre>
+                    <code>
+                        pip freeze > requirements.txt
+                    </code>
+                </pre>
                 
                 <p>This will redirect the output of the <code>pip freeze</code> command to the file <code>requirements.txt</code> which you can use as you will.</p>
             </p>
@@ -89,6 +111,11 @@
         <footer class="MainFooter"> 
             <p>Disclaimer: This blog entry was written in #socialdistancing mode day-unknown.</p>
         </footer>
+
+    <script src="../styles/google-code-prettify/prettify.js"></script>
+    <script>
+        window.onload = (function(){ prettyPrint(); });
+    </script>
     </body>
 
 </html>

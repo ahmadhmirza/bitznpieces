@@ -44,21 +44,24 @@
             co-ordinates of the box corresponding to each image in the dataset. The tool is opensource and is available on this <a href="https://github.com/tzutalin/labelImg">github repo</a>
             </p>
             <p>To install the tool simply run the following command in terminal</p>
-            <pre><code><p class=codeHighlighting>pip install labelImg
-<a style="color:rgb(102, 100, 100);"># To run the tool, execute the following command in terminal:</a>
-labelImg</p></code></pre></p>
+            <pre><code><p class=codeHighlighting><a style="color:rgb(47, 34, 165);"><b>(tfenv) (base) ... $</a></b> pip install labelImg</p></code></pre></p>
             <p>So lets start preping the workspace and get this thing done.</p>
             <h3>.</h3>
             <p> <b>STEP-1: Setting up the workspace:</b> From the last article we should already have a partial workspace setup, with a parent folder "ObjectDetection"
                 and a sub-folder named "tensorflow" containing the clone of the tf-models in the folder named "models". The following image shows the final directory structure
                 that I am going to be using throughout this article.
 <img class="imgHighlighting" src="../TechNotes/assets/tf-workspace-structure.png">
+            <p>Once this is done go ahead and find these two scripts in the directory <i>../tensorflow/models/research/object_detection/</i></p>
+            
+            <pre><code><p class=codeHighlighting>- model_main.py
+- export_inference_graph.py</code></pre></p>
 
+            <p>These scripts will be used later on, for convenience copy these to <i>../tensorflow/workspace/</i></p>
             </p>
             <p><b>STEP-2: Preparing the dataset: </b></p>
             <p><b>....2.1: Annotating the images:</b>At this point I assume that you already have your data-set images in a directory
                 all ready to be annotated. So go on ahead and fire up labelImg</p>
-            <pre><code><p class=codeHighlighting>(tfenv) (base) ahmad@bitznpieces:~/ObjectDetection$ labelImg</p></code></pre>
+            <pre><code><p class=codeHighlighting><a style="color:rgb(47, 34, 165);"><b>(tfenv) (base) ... $</a></b> labelImg</p></code></pre>
             <p>Click on <b>Open Dir</b> and point to the directory containing the your dataset. You should see the <b>File List</b>
             view gets populated with the links to the images in the selected directory. Now all you have to do is iterate through all
             of the images and draw bounding boxes around the objects that you want to be detected on all of these images.
@@ -74,12 +77,136 @@ labelImg</p></code></pre></p>
                 testing datasets. Now there are several open-source scripts and tools available for doing this partitioning, but 
                 I just do it manually. I will try to write a script my-self later and post it here when I get the time.
             </p>
-            <p> Create two directories named <b>test</b> and <b>train</b> inside <i>/workspace/dataset/</i> directory, and partition
+            <p> Create two directories named <b>test</b> and <b>train</b> inside <i>../workspace/dataset/</i> directory, and partition
                 your data-set e.g. if you have 1000 images take a 100 and put them in the test directory and the rest 900 in the train directory
                 along with their .xml files containing the metadata for annotations.
             </p>
-            <p><b>STEP-3: Label-Map: </b> Im gonna go do some chores now, will get back to this soon, stay tuned for more
-                thrilling steps...To be continued...</p>
+            <p><b>STEP-3: Label-Map: </b> The label-map file maps each label in your data-set to an integer value and is required for 
+            both the training and detection process. The format of the file is very simple and the extention of the file must be 
+            <b>.pbtxt</b>. Navigate to the <i>../tensorflow/workspace/annotations/</i> directory and create a file with the name
+            <b>label_map.pbtxt</b> the contents of the file and the command I use on linux to create it are in the following block:</p>
+            <pre><code><p class=codeHighlighting><a style="color:rgb(102, 100, 100);"># To create the labelmap, cd to the directory and execute the command:</a>
+<a style="color:rgb(47, 34, 165);"><b>(tfenv) (base) ... $</a></b> gedit label_map.pbtxt
+<a style="color:rgb(102, 100, 100);">############################################</a>
+<a style="color:rgb(102, 100, 100);"># For two detection classes the contents of the file should look like this:</a>
+item {
+    id: 1
+    name: 'Crosswalk'
+}</p></code></pre></p>
+
+            <p><b>STEP-4: Tensorflow Records: </b> The .xml files generated in step 2.1 containing the metadata for bounding boxes
+            have to be unified in a single file and converted to a format compatible with tensor flow <b>*.record</b>. I am going
+            to be using scripts developed by Lyudmil Vladimirov, and available on his <a href="https://github.com/sglvladi/TensorFlowObjectDetectionTutorial">github-repo</a>.</p>
+            <p>I have also placed these scripts and other files, including the data-set I used for training, on this <a href=https://github.com/ahmadhmirza/ObjectDetection>repository</a> for convenience.
+            </p>
+            <p><b>.... 4.1: </b>At this point you should have two scripts named <b>generate_tfrecord.py</b> and <b>xml_to_csv.py</b> in the 
+            directoy <i>../tensorflow/utilities/</i> (and also the script check_for_rgb.py if you cloned my repo). Cd into the 
+            <i>utilities</i> directory in the terminal and run the following commands to generate the <i>*.record</i> file for 
+            the training data:</p>
+            <pre><code><p class=codeHighlighting><a style="color:rgb(102, 100, 100);"># Unify .xml files and convert to .csv</a>
+<a style="color:rgb(47, 34, 165);"><b>../tensorflow/utilities</a>$</b> python xml_to_csv.py -i [path_to_training_dataset] 
+    -o [path_to_annotations_dir]/train_labels.csv
+
+<a style="color:rgb(102, 100, 100);">Convert from .csv to .record</a>
+python generate_tfrecord.py --label=[label] 
+    --csv_input=[path_to_annotations_dir]/train_labels.csv
+    --img_path=[path_to_training_dataset]  
+    --output_path=[path_to_annotations_dir]/train.record           
+            </p></code></pre>
+
+            <p><b>.... 4.2: </b>Now we shall repeat the same steps for the test data, the only difference will be the paths.</p>
+                <pre><code><p class=codeHighlighting><a style="color:rgb(102, 100, 100);"># Unify .xml files and convert to .csv</a>
+    <a style="color:rgb(47, 34, 165);"><b>../tensorflow/utilities</a>$</b> python xml_to_csv.py -i [path_to_test_dataset] 
+        -o [path_to_annotations_dir]/test_labels.csv
+    
+    <a style="color:rgb(102, 100, 100);">Convert from .csv to .record</a>
+    python generate_tfrecord.py --label=[label] 
+        --csv_input=[path_to_annotations_dir]/test_labels.csv
+        --img_path=[path_to_test_dataset]  
+        --output_path=[path_to_annotations_dir]/test.record           
+                </p></code></pre></p>
+            <p>If the above steps are executed properly you should have four new files in <i>tensorflow/workspace/annotations/</i> named <b>test.record, train.record, train_labels.csv</b> and <b>test_labels.csv</b>.</p>
+            
+            <p><b>STEP-5: Adapting the model's *.config file: </b> In this article we are basically employing the principles of transfer learning. Which means we are going to be
+            reusing one of the pre-built, pre-trained models and retrain it to identify the objects of our choosing. We can go ahead and design our very own model from scratch but 
+            that is a problem for another time & another article. A variety of pre-trained  models are available at <a href=https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md>Tensorflow detection model zoo.</a>
+            You can go ahead and browse for a model of your choice, for the tutorial I am going to use <a href=http://download.tensorflow.org/models/object_detection/ssd_inception_v2_coco_2018_01_28.tar.gz>ssd_inception_v2_coco.</a>
+            </p>
+            <p>Once you have downloaded the model file, extract it to the <i>../tensorflow/workspace/pre-trained-model/</i> directory. You should now have multiple files and one directory there.
+            One of these files shall be <b>pipeline.config</b>.Please take note that the <b>.config</b> file that came with the modelcasued some errors in the training process. The issue
+            has been fixed in a later version of the config file. You can get the new config file directly from <a href=https://raw.githubusercontent.com/developmentseed/label-maker/94f1863945c47e1b69fe0d6d575caa0b42aa8d63/examples/utils/ssd_inception_v2_coco.config>here.</a>
+            To adapt the pipeline to our problem, we will need to make some changes to this file. You can go through the file and get
+            familiar with the contents of the file. I am going to be describing the lines that will need to be changed:</p>
+            <p>Make a copy of the <b>pipeline.config</b> file in <i>../tensorflow/workspace/training/</i> directory and make the following changes to it.</p>
+            <pre><code><p class=codeHighlighting><a style="color:rgb(102, 100, 100);"># Unify .xml files and convert to .csv</a>
+model {
+    ssd {
+        <a style="color:rgb(35, 165, 23);">num_classes: 1</a><a style="color:rgb(102, 100, 100);">#Set this tag to the number of classes in your problem.</a>
+.... .... 
+
+feature_extractor {
+    <a style="color:rgb(35, 165, 23);">type: 'ssd_inception_v2'</a><a style="color:rgb(102, 100, 100);">#Put the name of your chosen model for this tag.</a>
+.... .... 
+
+    <a style="color:rgb(35, 165, 23);">fine_tune_checkpoint: "pre-trained-model/model.ckpt"</a><a style="color:rgb(102, 100, 100);">#Path to the pre-trained model</a>
+    from_detection_checkpoint: true
+    <a style="color:rgb(35, 165, 23);">num_steps: 100</a><a style="color:rgb(102, 100, 100);">#Set to the required number of training iterations</a>
+        .... .... 
+train_input_reader: {
+    tf_record_input_reader {
+    <a style="color:rgb(35, 165, 23);">input_path: "annotations/train.record"</a><a style="color:rgb(102, 100, 100);">#Path to .record file for training data</a>
+    }
+    <a style="color:rgb(35, 165, 23);">label_map_path: "annotations/label_map.pbtxt"</a><a style="color:rgb(102, 100, 100);">#Path to train label map file</a>
+    }
+.... ....
+
+eval_config: {
+    <a style="color:rgb(35, 165, 23);">num_examples: 8000</a><a style="color:rgb(102, 100, 100);"># Optional for evaluation.</a>  
+.... ..... 
+
+eval_input_reader: {
+    tf_record_input_reader {
+        <a style="color:rgb(35, 165, 23);">input_path: "annotations/test.record"</a><a style="color:rgb(102, 100, 100);">#Path to .record file for test data</a>
+    }
+    <a style="color:rgb(35, 165, 23);">label_map_path: "annotations/label_map.pbtxt"</a><a style="color:rgb(102, 100, 100);">#Path to test label map file</a>
+    shuffle: false
+    num_readers: 1
+}
+            </p></code></pre>
+
+        <p>In the above code snippet the tags with <a style="color:rgb(35, 165, 23);">green</a> font are the values you will need to adapt to the problem that you are trying to solve. So go ahead 
+        and find these tags with in the pipeline.config file and change it to the desired values now.</p>
+        
+        <p><b>STEP-6: Starting the training job: </b> Behold the moment of truth! now we are ready to start the training job. Run the following command to start the 
+        training process. If every thing is setup correctly, the training process will begin and you will have some time to chill out untill it completes depending
+        on the size of your data set and the number of iterations you set in step-5 this could take a while.</p>
+        <pre><code><p class=codeHighlighting>python model_main.py --alsologtostderr --model_dir=training/ 
+--pipeline_config_path=training/pipeline.config
+</code></pre></p>
+        <p>Once the training process has begun successfuly youd should see some debug prints on the terminal and something like this at the start of the process:</p>
+        <pre><code><p class=codeHighlighting>INFO:tensorflow:loss = 14.582134, step = 1
+I0509 21:36:04.911955 140342495471424 basic_session_run_hooks.py:262] 
+loss = 14.582134, step = 1
+        </code></pre></p>
+
+        <p><b>STEP-7: Moitoring the training process: </b>For monitoring the training process and several metrics e.g. training loss etc. tensorflow has this nifty tool called tensorboard.
+        to access it simply start a new terminal activate the correct virtual environment cd to <i>/tensorflow/workspace/</i> run the follwoing command. the terminal will show you the link to access the tensorboard 
+        in a browser once it initializes.</p>
+        <pre><code><p class=codeHighlighting>tensorboard --logdir=training\</code></pre></p>
+
+        <p><b>STEP-7: Exporting the trained inference graph: </b>Once the training process is complete, we need to extract the new inference graph. This will be used to perform
+        detections of the object you trained the model on later on. This can be done as follows:</p>
+        <pre><code><p class=codeHighlighting>python export_inference_graph.py --input_type image_tensor 
+--pipeline_config_path training/pipeline.config 
+--trained_checkpoint_prefix training/model.ckpt-100 
+--output_directory trained-inference-graphs/inference_graph_v1.pb</code></pre></p>
+
+        <p><b>STEP-8: Detect away using the new inference graph:</b> Now you are ready to use the newly trained model to perform detections on still images and videos. Piece of cake right?</p>
+        
+        <p> I will post a script in the repository that uses the model to perform detections, you can refer to it to get an idea how that can be done. This is it for now, I hope
+            this helped you in some way, thanks for sticking around... until next time, ciao!
+        </p>
+
             <div class=endOfSection><p> * ------ * ------ * ------ *</p></div>
         </section>
         <br>

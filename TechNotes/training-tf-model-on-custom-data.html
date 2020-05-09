@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151725252-1"></script>
+        <!-- Script for tracking using google analytics -->
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+        
+            gtag('config', 'UA-151725252-1');
+        </script>
+        <title>Bitz'nPieces</title>
+        <!-- <link rel="stylesheet" type="text/css" href="PATHTOCSSHERE">.-->
+        <link rel="stylesheet" type="text/css" href="../styles/Post_Style.css">
+        <link rel="stylesheet" type="text/css" href="../styles/google-code-prettify/prettify.css">
+        <link rel="alternate" type="application/rss+xml" title="Subscribe to new bitz" href="http://your-site.com/your-feed.rss" />
+
+    </head>
+    <body>
+        <section>
+                <h1> Bitz'nPieces</h1>
+        </section>
+
+        <div class="topnav">
+                <a href=../index.html href="#home">Home</a>
+                <a href=../CommingSoon.html>Archive</a>
+                <a href=../technotes.html>Tech Notes</a>
+                <a href=../aboutme.html>About</a>
+        </div>
+
+        <section class="PostText">
+            <h2> Training an Object Detection on Custom Data.</h2>
+            <p> In this article I am going to describe how you can train one of the pre-trained models available on <a href="https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md">
+                tensorflow model zoo</a> to detect and identify items of your choice. There are some pre-requisites that you need to have like some software and library installations.
+                These have been described in detail in an earlier tutorial about performing object detections using a pre-trained model and TensorFlow Object-Detection-API. The link to
+                that article is <a href="../TechNotes/tensor-flow-object-detection-api.html">
+                here</a>.
+            </p>
+        
+            </p>
+            <h3>Down the rabbit hole we go.</h3>
+            <p> <b>STEP-1: Setting up the workspace:</b> I covered creating python virtual environments in an earlier tutorial,
+                so If you have doubts go ahead and hit that tutorial up, otherwise now is the time to create a working directory and creating a dedicated 
+                virtual-environment for the project. For the sake of consistency I named the workspace as <strong>ObjectDetection</strong> and the virtual-environment as 
+                <strong>tfenv</strong>
+            </p>
+            <p><b>STEP-2: TensorFlow Installation: </b>Open a new terminal window and activate the tfenv environment. At this point the name of the environment should
+            be visible in front of the path specifier in the active terminal.</p>
+            <pre><code><p class=codeHighlighting>(tfenv) (base) ahmad@bitznpieces:~/ObjectDetection$ </p></code></pre>
+            <p>Run the following commands to install TensorFlow, I am going to be using version 1.14 for this tutorial. The reason for this is the many scripts in 
+                ObjectDetection API still do not support Tf>=2.0 and this causes many problems during training and execution.   
+            </p>
+            <pre><code><p class=codeHighlighting>pip install --upgrade pip
+pip install tensorflow==1.14</p></code></pre>
+
+            <p><b>STEP-3: Testing The Installation: </b>For TF>=2.0, for testing the installation, fire up the python interpretor, and
+            the following code snippet should print the famous "Hello World" phrase along with some debug messages.</p>
+            <pre><code><p class=codeHighlighting>python
+>>>import tensorflow as tf
+>>>message = "Hello world! I am running TensorFlow!"
+>>>tf.print(message)</p></code></pre>
+            
+            <p>Since we are now working with TF1.14, use the following code instead for testing the installation:</p>
+            <pre><code><p class=codeHighlighting>python
+>>>import tensorflow as tf
+>>>msg = tf.constant("Hello world! I am running TensorFlow!")
+>>>sess = tf.Session()
+>>>print(sess.run(msg))
+<a style="color:rgb(102, 100, 100);">b'Hello world! I am running TensorFlow!'</a></p></code></pre>
+
+            <p><b>STEP-4: Installing Dependencies: </b>Getting the object detecion up and running requires installation of several other packages that will be used for
+                visualizations, conversions etc. Go ahead and make a <strong>requirements.txt</strong> file now with the following packages:</p>
+            <pre><code><p class=codeHighlighting>jupyter
+matplotlib
+opencv-python
+pathlib
+lxml
+pillow
+Cython
+contextlib2</p></code></pre>
+            <p>With the file in place install the packages using pip:</p>
+            <pre><code><p class=codeHighlighting>pip install -r requirements.txt</p></code></pre>
+
+            <p><b>STEP-5: TensorFlow Models: </b> TensorFlow Models repository contains several implementations and utilities of ML models, some of
+            which we will be using today for this tutorial. You can read more about the contents of the repo <a href="https://github.com/tensorflow/models">here</a>. Go ahead and clone the repo in 
+        in the <strong>ObjectDetection</strong> directory. At the time of writing this tutorial version 2.1.0 is the latest release.</p>
+        <pre><code><p class=codeHighlighting>git clone https://github.com/tensorflow/models.git</p></code></pre>
+
+        <p><b>STEP-6: Protobuf Installation: </b> Protobuf short for protocol buffers are language neutral mechanism developed by google for serializing
+            data.TensorFlow Object Detection API uses protobufs for models' & training parameters' configurations. There are two ways to get the protobuf
+        ready for your object detection needs:</p> 
+        <p><i> - STEP-6(a): </i></p>
+        <pre><code><p class=codeHighlighting>sudo apt-get install protobuf-compiler python-pil python-lxml python-tk
+<a style="color:rgb(102, 100, 100);"># cd to /tensorflow/models/research directory:</a>
+protoc object_detection/protos/*.proto --python_out=.</p></code></pre>
+        <p><i> - STEP-6(b): </i> The alternative is manually getting the protoc 3.0 release and compiling it.
+            Download the protoc ver 3.0.0 release from <a href="https://github.com/google/protobuf/releases/download/v3.0.0/protoc-3.0.0-linux-x86_64.zip">here</a>
+             and extract it to /tensorflow/models/research/ directory</p>
+        <p> Now for compiling the protoc, from /tensorflow/models/research/ directory run the following command in the terminal:</p>
+        <pre><code><p class=codeHighlighting>./bin/protoc object_detection/protos/*.proto --python_out=.</p></code></pre>
+
+        <p><b>STEP-7: COCOAPI Installation(optional): </b> To be done </p>
+
+        <p><b>STEP-8: Adding Libraries to PythonPath: </b> The paths to the relevant directories need to be appended to PYTHONPATH, this is done by 
+        executing the following path from <i>tensorflow/models/research</i> directory:</p>
+        <pre><code><p class=codeHighlighting>export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim</p></code></pre>
+        <p>The above command is needed to be run on every new terminal before object-detection could be run. If you want to avoid this hassle then
+            add the above line to the end of your ~/.bashrc file</p>
+        <pre><code><p class=codeHighlighting>gedit ~/.bashrc
+<a style="color:rgb(102, 100, 100);"># update and save the file.</a> 
+source ~/.bashrc</p></code></pre>
+        <p><b>STEP-9: Testing The Installation(TF-ObjectDetection API): </b> To verify the installation of the Tensorflow ObjectDetection API
+            run the following command.</p>
+            <pre><code><p class=codeHighlighting><a style="color:rgb(102, 100, 100);"># From /tensorflow/models/research directory:</a>
+python object_detection/builders/model_builder_test.py</p></code></pre>
+
+        <p><b>STEP-10: Taking ObjectDetection API for a test-drive:</b>Change the directory to <i>/tensorflow/models/research/object_detection</i> and run 
+        jupyter notebook like so:</p>
+        <pre><code><p class=codeHighlighting><a style="color:rgb(24, 80, 185);">tensorflow/models/research/object_detection$</a> jupyter notebook</p></code></pre>
+        <p>Scroll down and find the jupyter notebook named <strong>object_detection_tutorial.ipynb</strong> and open it. Go to the <strong>Cell</strong> tab 
+        and click "Run All". This will start the kernel and once the execution is completed, you will see the processing results of some test images included in the 
+        library in <i>models/research/object_detection/test_images</i> directory. You can also put your own images here to test with this tutorial notebook or
+        change the path to the directory containing your images in cell[11] for the variable named <i>PATH_TO_TEST_IMAGES_DIR.</i> </p>
+
+        <p><b>STEP-11: </b>Give yourself a pat on the back for getting through this tutorial and successfully getting every thing up and running.</p>
+
+        <p>I will cover preparing a custom dataset and training a model on it in one of the upcomming tutorials so stay tuned and code on!</p>
+
+            <div class=endOfSection><p> * ------ * ------ * ------ *</p></div>
+        </section>
+        <br>
+        <footer class="MainFooter"> 
+            <p>Disclaimer: This blog entry was written in #socialdistancing mode day-unknown.</p>
+        </footer>
+
+    <script src="../styles/google-code-prettify/prettify.js"></script>
+    <script>
+        window.onload = (function(){ prettyPrint(); });
+    </script>
+    </body>
+
+</html>

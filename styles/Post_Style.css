@@ -126,3 +126,10 @@ text-justify: auto;
   border: rgb(139, 146, 161) 0px 
   solid}
 
+  .imgHighlighting {
+    margin-left: 30%;
+    padding:10px 50px 10px 50px; 
+    color: #0c0404; 
+    background-color: rgb(211, 220, 241); 
+    border: rgb(139, 146, 161) 1px 
+    solid}

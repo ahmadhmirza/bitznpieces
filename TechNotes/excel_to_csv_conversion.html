@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151725252-1"></script>
+        <!-- Script for tracking using google analytics -->
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+        
+            gtag('config', 'UA-151725252-1');
+        </script>
+        <title>Bitz'nPieces</title>
+        <!-- <link rel="stylesheet" type="text/css" href="PATHTOCSSHERE">.-->
+        <link rel="stylesheet" type="text/css" href="../styles/Post_Style.css">
+        <link rel="stylesheet" type="text/css" href="../styles/google-code-prettify/prettify.css">
+        <link rel="alternate" type="application/rss+xml" title="Subscribe to new bitz" href="http://your-site.com/your-feed.rss" />
+    </head>
+    <body>
+        <section>
+                <h1> Bitz'nPieces</h1>
+        </section>
+
+        <div class="topnav">
+                <a href=../index.html href="#home">Home</a>
+                <a href=../CommingSoon.html>Archive</a>
+                <a href=../technotes.html>Tech Notes</a>
+                <a href=../aboutme.html>About</a>
+        </div>
+
+        <section class="PostText">
+            <h2> Excel To CSV Converter.</h2>
+            <p> So I thought today for a change of pace, I will shift to a different topic than Tensorflow, object detection and the sorts. In this article I am goin to go 
+                over the steps for developing a python script which reads in an excel file and converts it to a csv(comma seperated values) file. The task is simple but 
+                in the course of this article I will cover some important points like, argument passing using Pythons Options parser, reading excel files using the library <i>xlrd</i>
+                , writing a csv file.
+            </p>
+            <h3>Imports:</h3>
+            <p>The dependencies needed to be imported for this program to work are: </p>
+            <pre><code><p class=codeHighlighting>import os
+import xlrd
+import csv
+from sys import exit
+from optparse import OptionParser
+</p></code></pre></p>
+
+            <p>I use exit module to return codes back to the environment in case the scripts are to be run in an automation pipeline.
+                You will see the usage in the later sections.</p>
+            <h3>Reading Excel File:</h3>
+            <p>First lets go over the function that shall read in the excel file,
+            iterate it row by row and save the data in a python list.
+            </p>
+            <pre><code><p class=codeHighlighting>workbook=xlrd.open_workbook(excelFile,'r')
+workSheet = workbook.sheet_by_index(sheetIndex)
+sheetData = []
+rowData   = []
+for rowIndex in range(1,workSheet.nrows):
+    rowData = []
+    for colIndex in range(1,workSheet.ncols):
+        rowData.append(workSheet.cell_value(rowIndex,colIndex))
+    sheetData.append(rowData)
+</p></code></pre></p>
+            
+            <p>The above code snippet, opens a new workbook as read-only from the variable <i>excelFile</i>(which is the path string to the input excelFile).
+            Then the target sheet from the workbook is opened, as you can see, i an open the sheet using the index value, you can also use <i>sheet_by_namey</i>
+            function if you want to go that way. Then we iterate each column in each row in that sheet, reading the columns one-by-one 
+            and saving the cell value in a python list. As easy as pie right?</p>
+
+            <h3>Writing a CSV File From a Python List:</h3>
+            <p>Now that we have a python list populated with the contents of the excel file, next step would be to write it to a 
+                csv file..
+            </p>
+            <pre><code><p class=codeHighlighting><a style="color:rgb(102, 100, 100);"># outFile: Path string to output.csv file</a>
+with open(outFile, "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerows(data) <a style="color:rgb(102, 100, 100);"># data: python list with excel-file's contents</a>
+</p></code></pre></p>
+
+<h3>Passing Command Line Arguments and Options:</h3>
+            <p>We have already gone over the core elements required for this program. Now for some command-line-interface. <i>OptionParser</i> provides
+                a convenient way for you to setup a cli for your program all the way from arguments to options. And it will also auto generate a 
+                help menu for your program which can be accessed from the terminal with -h or --help option.
+            </p>
+            <pre><code><p class=codeHighlighting>usage = "usage: %prog arg1 {input xlsx file path} arg2{sheet to be converted(index)} [options]"
+                parser = OptionParser(usage=usage)
+            
+                parser.add_option("-o", "--output",dest="outFile",
+                                  help="Full path for output csv file", metavar="FilePath",
+                                  default=outFile)
+                
+                (options, args)  = parser.parse_args()
+                outFile          = options.outFile # File path
+                
+                if len(args) != 2:
+                    print("Incorrect number of arguments provided!")
+                    exit(1)
+                else:    
+                    inputExcelFile = args[0]
+                    sheetIndex  = args[1]
+</p></code></pre></p>
+            <p>For this program I chose to have the path to the input file and the index of the target sheet as arguments and the 
+                path to the output file as an option. So in case no path parameter is provided the output file will be generated in the 
+                scipts directory. All that remains now is to bring all these parts together to make up the program. You can go to the 
+                <a href="https://github.com/ahmadhmirza/ToolsAndUtilities/tree/master/ExcelToCsvConverter">repository</a> for the program and get the source code from there, explore it and build on it further if you want. 
+                So this is it for an easier tutorial, happy coding and until next time.
+            </p>
+            <div class=endOfSection><p> * ------ * ------ * ------ *</p></div>
+        </section>
+        <br>
+        <footer class="MainFooter"> 
+            <p>Disclaimer: This blog entry was written in #socialdistancing mode day-unknown.</p>
+        </footer>
+
+    <script src="../styles/google-code-prettify/prettify.js"></script>
+    <script>
+        window.onload = (function(){ prettyPrint(); });
+    </script>
+    </body>
+
+</html>

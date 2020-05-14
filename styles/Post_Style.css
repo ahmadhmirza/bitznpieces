@@ -51,42 +51,6 @@ h1 {
   color: white;
 }
 
-/*Styling for Intro Text*/
-.Intro{
-  margin: 0 auto;
-  width: 60%;
-  align-content: center;
-}
-.Intro p{
-  text-align: center;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 20px;
-text-justify: auto;
-}
-
-/*Styling for About me page*/
-.AboutMe p{
-  text-align: left;
-  font-family: 'Courier New', Courier, monospace;
-  margin: 47px;
-  font-size: 20px;
-  text-justify: auto;
-}
-
-/* Styling for the links section */
-.PostLinks{
-  margin: 0 auto;
-  width: 60%;
-  align-content: center;
-  font-family: 'Courier New', Courier, monospace;
-}
-.PostLinks div.Date{
-  font-weight: bold;
-}
-.PostLinks div.Name{
-  font-style: italic;
-}
-
 /* Styling for the footer on the main page */
 .MainFooter{
   align-content: center;
@@ -97,15 +61,14 @@ text-justify: auto;
 }
 
 .PostText {
+  font-family: 'Arial, Helvetica, sans-serif';
   width: 80%;
   align-content: left;
-  margin: 16px;
+  margin: 20px;
 }
 .PostText p{
   width: 80%;
-  font-family: 'Courier New', Courier, monospace;
   margin: 20px;
-  font-size: 15px;
 }
 .PostText .h2{
   width: 80%;

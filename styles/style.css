@@ -53,35 +53,34 @@ h1 {
 
   /*Styling for Intro Text*/
   .Intro{
-    margin: 0 auto;
-    width: 60%;
-    align-content: center;
+    width: 80%;
+    align-content: left;
+    font-family: 'Arial, Helvetica, sans-serif';
+    margin: 20px;
   }
   .Intro p{
-    text-align: center;
-    font-family: 'Courier New', Courier, monospace;
+    width: 80%;
+    margin: 20px;
     font-size: 20px;
-	  text-justify: auto;
   }
 
   /*Styling for About me page*/
   .AboutMe p{
+    width: 80%;
     text-align: left;
-    font-family: 'Courier New', Courier, monospace;
-    margin: 47px;
+    font-family: 'Arial, Helvetica, sans-serif';
+    margin: 50px;
     font-size: 20px;
 	  text-justify: auto;
   }
 
   /* Styling for the links section */
   .PostLinks{
-    margin: 0 auto;
-    width: 60%;
-    align-content: center;
+    margin: 20px;
+    width: 80%;
+    align-content: left;
     font-family: 'Courier New', Courier, monospace;
   }
-  /*.PostLinks .Date{
-  }*/
 
   .PostLinks .Name a{
     color: black;
@@ -99,20 +98,8 @@ h1 {
 
 .CommingSoon {
   text-align: left;
-  font-family: 'Courier New', Courier, monospace;
-  margin: 47px;
+  font-family: 'Arial, Helvetica, sans-serif';
+  margin: 50px;
   font-size: 20px;
   text-justify: auto;
 }
-
-.PostText {
-  margin: 0 auto;
-  width: 60%;
-  align-content: left;
-  }
-.PostText p{
-  text-align: center;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 20px;
-	text-justify: auto;
-  }

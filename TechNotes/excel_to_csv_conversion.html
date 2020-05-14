@@ -84,21 +84,21 @@ with open(outFile, "w", newline="") as f:
                 help menu for your program which can be accessed from the terminal with -h or --help option.
             </p>
             <pre><code><p class=codeHighlighting>usage = "usage: %prog arg1 {input xlsx file path} arg2{sheet to be converted(index)} [options]"
-                parser = OptionParser(usage=usage)
-            
-                parser.add_option("-o", "--output",dest="outFile",
-                                  help="Full path for output csv file", metavar="FilePath",
-                                  default=outFile)
-                
-                (options, args)  = parser.parse_args()
-                outFile          = options.outFile # File path
-                
-                if len(args) != 2:
-                    print("Incorrect number of arguments provided!")
-                    exit(1)
-                else:    
-                    inputExcelFile = args[0]
-                    sheetIndex  = args[1]
+parser = OptionParser(usage=usage)
+
+parser.add_option("-o", "--output",dest="outFile",
+                    help="Full path for output csv file", metavar="FilePath",
+                    default=outFile)
+
+(options, args)  = parser.parse_args()
+outFile          = options.outFile # File path
+
+if len(args) != 2:
+    print("Incorrect number of arguments provided!")
+    exit(1)
+else:    
+    inputExcelFile = args[0]
+    sheetIndex  = args[1]
 </p></code></pre></p>
             <p>For this program I chose to have the path to the input file and the index of the target sheet as arguments and the 
                 path to the output file as an option. So in case no path parameter is provided the output file will be generated in the 
